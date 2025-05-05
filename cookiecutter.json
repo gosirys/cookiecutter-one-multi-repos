@@ -1,0 +1,7 @@
+{
+	"project_slug": "my-one-multi-repo",
+	"submodules": [
+		"https://github.com/you/foo.git",
+		"https://github.com/you/bar.git"
+	]
+}
