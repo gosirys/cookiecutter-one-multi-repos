@@ -13,8 +13,10 @@ jobs:
       - name: Checkout repo w/ submodules
         uses: actions/checkout@v3
         with:
+          {% raw %}
           submodules: recursive
           token: ${{ secrets.CUSTOM_PAT || secrets.GITHUB_TOKEN }}
+          {% endraw %}
 
       - name: Configure Git
         run: |
