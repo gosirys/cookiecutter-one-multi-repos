@@ -72,17 +72,18 @@ To use private repositories as submodules in GitHub Actions workflows (e.g., for
 Process:
 
 1. Generate a Personal Access Token (PAT) in your GitHub account  
+   - [Generate a Personal Access Token (PAT)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
    - Go to **Settings → Developer settings → Personal access tokens (classic) → Generate new token**  
    - Name it, set an expiration if desired, and select the **repo** scope (or more narrowly, the `repo:status, repo_deployment, public_repo, repo:invite, repo:read` subset) scope so it can check out private repos.
-   - Click **Generate token** and copy it immediately  
+   - Click **Generate token** and copy it immediately.
 
 2. In your main repository's settings:  
-   - **Secrets and variables → Actions** → **New repository secret**  
+   - **Secrets and variables → Actions** → [Add Repository Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets)  
      - **Name:** `CUSTOM_PAT`  
      - **Value:** _your PAT_  
-   - **Actions → General → Workflow permissions**  
+   - **Actions → General → Workflow permissions** → [Configure Workflow Permissions](https://docs.github.com/en/actions/security-guides/permissions-for-the-github_token)  
      - **Workflow permissions:** Read and write  
-     - **Allow GitHub Actions to access:** Only select repositories - now **add** each private repository you want to use as a submodule   
+     - **Allow GitHub Actions to access:** Only select repositories - now **add** each private repository you want to use as a submodule.
 
 
 ---
@@ -111,23 +112,30 @@ Process:
    ```
 
 3. **Bootstrap modules/**  
-   ```bash
-   chmod +x scripts/init-submodules.sh
-   scripts/init-submodules.sh
-   git add modules/ submodules.txt
-   git commit -m "chore: add initial submodules"
-   ```
 
-4. **Create & push to GitHub**  
-   ```bash
-   gh repo create YOUR-ORG/my-modular-project \
-     --public \
-     --source=. \
-     --remote=origin
-   # or manually:
-   # git remote add origin git@github.com:YOUR-ORG/my-modular-project.git
-   git push -u origin main
-   ```
+    This will add the submodules to the repo, configure the `CUSTOM_PAT` secret and grant the workflow its required permissions.
+      ```bash
+      chmod +x scripts/init-submodules.sh
+      scripts/init-submodules.sh
+      ```
+    After that, the built-in GitHub Action in `.github/workflows/update-submodules.yml` runs on its schedule without further configuration.
+
+
+4. **Link to GitHub**  
+
+    if you already have a remote:
+      ```bash
+      git remote add origin git@github.com:YOUR-ORG/my-modular-project.git
+      git push -u origin main
+      ```
+
+    Otherwise, create a new repo and link it:  
+      ```bash
+      gh repo create YOUR-ORG/my-modular-project \
+        --public \
+        --source=. \
+        --remote=origin
+      ```
 
 5. **Verify CI**  
    GitHub Actions will pick up `.github/workflows/update-submodules.yml` and run on the defined cron schedule, updating your submodule pointers automatically.
@@ -199,6 +207,8 @@ jobs:
 > **Note:**  
 > - Uses either `CUSTOM_PAT` (for private submodules) or falls back to `GITHUB_TOKEN`.  
 > - To support private submodules, ensure your PAT is configured as a secret as described above.
+ 
+Read more on actions/checkout [here](https://github.com/actions/checkout)
 
 ---
 
