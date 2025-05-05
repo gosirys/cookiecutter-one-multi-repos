@@ -48,12 +48,7 @@ This template gives you all three out of the box:
 
 ## Prerequisites
 
-To use private repositories as submodules in GitHub Actions workflows (e.g., for automatically pulling submodule updates), you need to ensure the following:
-
-Access to Private Repositories: GitHub Actions can only access private repositories if the necessary permissions are granted. This requires enabling GitHub Actions for a private repository and setting up authentication (like a Personal Access Token or SSH key) for accessing the private submodule.
-
-GitHub Pro or Higher Subscription: A GitHub Pro subscription (or higher, like GitHub Team or Enterprise) is required to use private repositories, including private submodules, in GitHub Actions workflows. Without this subscription, private repositories won't be accessible for these purposes.
-
+This effectively only applies if you intend to use private repositories as your submodules. If that's not the case, you can skip this part.
 
 ### Public vs Private Repositories
 
@@ -69,7 +64,7 @@ To use private repositories as submodules in GitHub Actions workflows (e.g., for
 
 - Access to Private Repositories: GitHub Actions can only access private repositories if the necessary permissions are granted. This requires enabling GitHub Actions for a private repository and setting up authentication (like a Personal Access Token or SSH key) for accessing the private submodule.
 
-Process:
+Steps:
 
 1. Generate a Personal Access Token (PAT) in your GitHub account  
    - [Generate a Personal Access Token (PAT)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
